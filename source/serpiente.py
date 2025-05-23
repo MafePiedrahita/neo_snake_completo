@@ -15,3 +15,8 @@ class Cabeza:
         elif self.direccion == "DERECHA":
             x += 1
         self.posicion = (x, y)
+
+    def cambiar_direccion(self, nueva_direccion):
+        opuestos = {"ARRIBA": "ABAJO", "ABAJO": "ARRIBA", "IZQUIERDA": "DERECHA", "DERECHA": "IZQUIERDA"}
+        if nueva_direccion != opuestos.get(self.direccion, None):
+            self.direccion = nueva_direccion
