@@ -14,3 +14,6 @@ class PowerupCongelar:
         if self.visible:
             rect = pygame.Rect(self.x * TAM_CELDA, self.y * TAM_CELDA, TAM_CELDA, TAM_CELDA)
             pygame.draw.rect(superficie, self.color, rect)
+
+    def activar(self):
+        self.visible = False
