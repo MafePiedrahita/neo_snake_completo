@@ -21,3 +21,8 @@ class Alimentos:
         rect = pygame.Rect(self.x * TAM_CELDA, self.y * TAM_CELDA, TAM_CELDA, TAM_CELDA)
         pygame.draw.rect(superficie, self.color, rect)
 
+class Pera(Alimentos):
+    def __init__(self, ancho_tablero: int, alto_tablero: int):
+        super().__init__("Pera", ancho_tablero, alto_tablero, morado)
+
+
