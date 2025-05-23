@@ -23,6 +23,10 @@ class Alimentos:
 
 class Pera(Alimentos):
     def __init__(self, ancho_tablero: int, alto_tablero: int):
-        super().__init__("Pera", ancho_tablero, alto_tablero, morado)
+        super().__init__("Pera", ancho_tablero, alto_tablero, verde)
+
+class Ciruela(Alimentos):
+    def __init__(self, ancho_tablero: int, alto_tablero: int):
+        super().__init__("Ciruela", ancho_tablero, alto_tablero, morado)
 
 
