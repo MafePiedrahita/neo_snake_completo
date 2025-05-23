@@ -30,3 +30,4 @@ class Ciruela(Alimentos):
         super().__init__("Ciruela", ancho_tablero, alto_tablero, morado)
 
 
+
