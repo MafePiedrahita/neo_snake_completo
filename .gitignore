@@ -1,0 +1,25 @@
+# Archivos y carpetas de Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.log
+
+# Entornos virtuales
+env/
+venv/
+.venv/
+
+# Configuración local de PyCharm
+.idea/
+
+# Archivos del sistema
+.DS_Store
+Thumbs.db
+
+# Archivos JSON de datos temporales
+mejores_puntajes.json
+
+# Carpetas de recursos que pueden ser muy pesadas (opcional)
+# assets/sonidos/
+# assets/imagenes/
