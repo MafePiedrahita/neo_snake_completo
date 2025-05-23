@@ -11,5 +11,11 @@ class Obstaculo:
         self.x = random.randint(0, ancho_tablero - 1)
         self.y = random.randint(0, alto_tablero - 1)
         self.color = blanco
+    def dibujar(self, superficie):
+        rect = pygame.Rect(
+            self.x * self.tam_celda, self.y * self.tam_celda,
+            self.tam_celda, self.tam_celda
+        )
+        pygame.draw.rect(superficie, self.color, rect)
 
 
