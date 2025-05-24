@@ -78,3 +78,16 @@ while corriendo:
         duplicar_puntaje, tiempo_duplicar,
         tiempo_congelado, congelado, tiempo_actual, DURACION_POWERUP
     )
+
+    for jugador in jugadores.values():
+        x, y = jugador.serpiente.cabeza.posicion
+        pygame.draw.rect(pantalla, AMARILLO, pygame.Rect(x * TAM_CELDA, y * TAM_CELDA, TAM_CELDA, TAM_CELDA))
+        for x, y in jugador.serpiente.cuerpo.segmentos:
+            pygame.draw.rect(pantalla, jugador.color, pygame.Rect(x * TAM_CELDA, y * TAM_CELDA, TAM_CELDA, TAM_CELDA))
+
+    for x, y in obstaculos:
+        pygame.draw.rect(pantalla, BLANCO, pygame.Rect(x * TAM_CELDA, y * TAM_CELDA, TAM_CELDA, TAM_CELDA))
+
+    pera.dibujar(pantalla)
+    ciruela.dibujar(pantalla)
+    powerup.dibujar(pantalla)
