@@ -7,3 +7,6 @@ def cargar_musica(ruta):
     pygame.mixer.music.set_volume(0.3)
     pygame.mixer.music.play(-1)
 
+def detener_musica():
+    pygame.mixer.music.stop()
+
