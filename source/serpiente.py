@@ -42,8 +42,8 @@ class Cola:
         self.posicion = nueva_posicion
 
 class Serpiente:
-    def __init__(self):
-        self.cabeza = Cabeza(5, 5)
+    def __init__(self, x_inicial=5, y_inicial=5):
+        self.cabeza = Cabeza(x_inicial, y_inicial)
         self.cuerpo = Cuerpo()
         self.cola = Cola()
         self.longitud = 1
