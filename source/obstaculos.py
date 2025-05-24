@@ -1,8 +1,6 @@
 import pygame
 import random
 
-from source.main import TAM_CELDA
-
 class Obstaculo:
     def __init__(self, ancho_tablero, alto_tablero, tam_celda):
         self.ancho_tablero = ancho_tablero
