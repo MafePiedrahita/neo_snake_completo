@@ -58,3 +58,23 @@ tiempo_duplicar = {"jugador1": 0, "jugador2": 0}
 congelado = False
 tiempo_congelado = 0
 DURACION_POWERUP = 10000
+
+pantalla = pygame.display.set_mode((ANCHO, ALTO))
+pygame.display.set_caption("Neo-Snake Multijugador")
+
+corriendo = True
+
+while corriendo:
+    tiempo_actual = pygame.time.get_ticks()
+    clock.tick(3 if congelado else FPS)
+    pantalla.fill(NEGRO)
+
+    corriendo = manejar_eventos(jugador1, jugador2)
+    if not corriendo:
+        break
+
+    corriendo, congelado, tiempo_congelado = actualizar_estado(
+        jugadores, pera, ciruela, powerup, obstaculos,
+        duplicar_puntaje, tiempo_duplicar,
+        tiempo_congelado, congelado, tiempo_actual, DURACION_POWERUP
+    )
