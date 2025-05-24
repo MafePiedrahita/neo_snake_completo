@@ -38,7 +38,7 @@ def actualizar_estado(jugadores, pera, ciruela, powerup, osbtaculos,
             tiempo_congelado = tiempo_actual
 
         #colsion obstaculo, cuerpo / borde
-        if jugador.serpiente.colisionar(osbtaculos=osbtaculos):
+        if jugador.serpiente.colisionar(obstaculos=osbtaculos):
             print(f"{nombre} colisionaste:(!!")
             guardar_puntaje(nombre, jugador.puntaje)
             return False, congelado, tiempo_congelado
