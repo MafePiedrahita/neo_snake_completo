@@ -1,8 +1,13 @@
 #Clases de la serpiente (Cabeza, Cuerpo, Cola) Mariana
+import pygame
+from source.main import TAM_CELDA
+
 class Cabeza:
     def __init__(self, x,y):
         self.posicion = (x, y)
         self.direccion = "DERECHA"
+        self.imagen = pygame.image.load("assets/imagenes/cabeza.png")
+        self.imagen = pygame.transform.scale(self.imagen, (TAM_CELDA, TAM_CELDA))
 
     def mover(self):
         x,y = self.posicion
@@ -24,6 +29,8 @@ class Cabeza:
 class Cuerpo:
     def __init__(self):
         self.segmentos = []
+        self.imagen = pygame.image.load("assets/imagenes/cuerpo.png")
+        self.imagen = pygame.transform.scale(self.imagen, (TAM_CELDA, TAM_CELDA))
 
     def mover(self, nueva_posicion):
         self.segmentos.insert(0, nueva_posicion)
@@ -37,6 +44,8 @@ class Cuerpo:
 class Cola:
     def __init__(self):
         self.posicion = None
+        self.imagen = pygame.image.load("assets/imagenes/cola.png")
+        self.imagen = pygame.transform.scale(self.imagen, (TAM_CELDA, TAM_CELDA))
 
     def actualizar(self, nueva_posicion):
         self.posicion = nueva_posicion
