@@ -1,0 +1,11 @@
+imagenes:
+  cabeza: "assets/imagenes/cabeza.png"
+  ciruela: "assets/imagenes/ciruela.png"
+  cola: "assets/imagenes/cola.png"
+  cuerpo: "assets/imagenes/cuerpo.png"
+  fondo_tablero: "assets/imagenes/fondo_tablero.png"
+  obstaculo: "assets/imagenes/obstaculo.png"
+  pera: "assets/imagenes/pera.png"
+
+sonidos:
+  musica_fondo: "assets/sonidos/musica_fondo.mp3"
