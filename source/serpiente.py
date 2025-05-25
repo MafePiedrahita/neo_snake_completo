@@ -1,11 +1,14 @@
 #Clases de la serpiente (Cabeza, Cuerpo, Cola) Mariana
+TAM_CELDA = 50
+
 class Cabeza:
-    def __init__(self, x,y):
+    def __init__(self, x, y, recursos):
         self.posicion = (x, y)
         self.direccion = "DERECHA"
+        self.imagen = recursos.get_imagen("cabeza")
 
     def mover(self):
-        x,y = self.posicion
+        x, y = self.posicion
         if self.direccion == "ARRIBA":
             y -= 1
         elif self.direccion == "ABAJO":
@@ -17,35 +20,45 @@ class Cabeza:
         self.posicion = (x, y)
 
     def cambiar_direccion(self, nueva_direccion):
-        opuestos = {"ARRIBA": "ABAJO", "ABAJO": "ARRIBA", "IZQUIERDA": "DERECHA", "DERECHA": "IZQUIERDA"}
-        if nueva_direccion != opuestos.get(self.direccion, None):
+        opuestos = {
+            "ARRIBA": "ABAJO",
+            "ABAJO": "ARRIBA",
+            "IZQUIERDA": "DERECHA",
+            "DERECHA": "IZQUIERDA"
+        }
+        if nueva_direccion != opuestos.get(self.direccion):
             self.direccion = nueva_direccion
 
+
 class Cuerpo:
-    def __init__(self):
+    def __init__(self, recursos):
         self.segmentos = []
+        self.imagen = recursos.get_imagen("cuerpo")
 
     def mover(self, nueva_posicion):
         self.segmentos.insert(0, nueva_posicion)
         if len(self.segmentos) > 1:
-                self.segmentos.pop()
+            self.segmentos.pop()
 
     def crecer(self):
-            if self.segmentos:
-                self.segmentos.append(self.segmentos[-1])
+        if self.segmentos:
+            self.segmentos.append(self.segmentos[-1])
+
 
 class Cola:
-    def __init__(self):
+    def __init__(self, recursos):
         self.posicion = None
+        self.imagen = recursos.get_imagen("cola")
 
     def actualizar(self, nueva_posicion):
         self.posicion = nueva_posicion
 
+
 class Serpiente:
-    def __init__(self):
-        self.cabeza = Cabeza(5, 5)
-        self.cuerpo = Cuerpo()
-        self.cola = Cola()
+    def __init__(self, x_inicial=5, y_inicial=5, recursos=None):
+        self.cabeza = Cabeza(x_inicial, y_inicial, recursos)
+        self.cuerpo = Cuerpo(recursos)
+        self.cola = Cola(recursos)
         self.longitud = 1
 
     def mover(self):

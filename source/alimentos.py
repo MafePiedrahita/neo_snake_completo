@@ -1,16 +1,15 @@
-import pygame
 import random
-TAM_CELDA = 30
 
-verde = (0,128,0)
-morado = (128,0,128)
+TAM_CELDA = 50
 
 class Alimentos:
-    def __init__(self, tipo: str, ancho_tablero: int, alto_tablero: int, color ):
+    def __init__(self, tipo: str, ancho_tablero: int, alto_tablero: int):
         self.tipo = tipo
         self.ancho_tablero = ancho_tablero
         self.alto_tablero = alto_tablero
-        self.color = color
+        self.x = 0
+        self.y = 0
+        self.imagen = None
         self.nueva_posicion()
 
     def nueva_posicion(self):
@@ -18,16 +17,14 @@ class Alimentos:
         self.y = random.randint(0, self.alto_tablero - 1)
 
     def dibujar(self, superficie):
-        rect = pygame.Rect(self.x * TAM_CELDA, self.y * TAM_CELDA, TAM_CELDA, TAM_CELDA)
-        pygame.draw.rect(superficie, self.color, rect)
+        superficie.blit(self.imagen, (self.x * TAM_CELDA, self.y * TAM_CELDA))
 
 class Pera(Alimentos):
-    def __init__(self, ancho_tablero: int, alto_tablero: int):
-        super().__init__("Pera", ancho_tablero, alto_tablero, verde)
+    def __init__(self, ancho_tablero: int, alto_tablero: int, recursos):
+        super().__init__("Pera", ancho_tablero, alto_tablero)
+        self.imagen = recursos.get_imagen("pera")
 
 class Ciruela(Alimentos):
-    def __init__(self, ancho_tablero: int, alto_tablero: int):
-        super().__init__("Ciruela", ancho_tablero, alto_tablero, morado)
-
-
-
+    def __init__(self, ancho_tablero: int, alto_tablero: int, recursos):
+        super().__init__("Ciruela", ancho_tablero, alto_tablero)
+        self.imagen = recursos.get_imagen("ciruela")

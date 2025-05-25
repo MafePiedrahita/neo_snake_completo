@@ -10,10 +10,11 @@ def manejar_eventos(jugador1, jugador2):
             jugador2.controlar(evento)
     return True
 
-def actualizar_estado(jugadores, pera, ciruela, powerup, osbtaculos,
-                      duplicar_puntaje, tiempo_duplicar, tiempo_congelado,
-                      congelado, tiempo_actual, DURACION_POWERUP
-                      ):
+def actualizar_estado(jugadores, pera, ciruela, powerup, obstaculos,
+                      duplicar_puntaje, tiempo_duplicar,
+                      tiempo_congelado, congelado, tiempo_actual, DURACION_POWERUP,
+                      ancho_celdas, alto_celdas):
+
     for nombre, jugador in jugadores.items():
         jugador.serpiente.mover()
         cabeza = jugador.serpiente.cabeza.posicion
@@ -38,7 +39,7 @@ def actualizar_estado(jugadores, pera, ciruela, powerup, osbtaculos,
             tiempo_congelado = tiempo_actual
 
         #colsion obstaculo, cuerpo / borde
-        if jugador.serpiente.colisionar(osbtaculos=osbtaculos):
+        if jugador.serpiente.colisionar(ancho_celdas, alto_celdas, obstaculos):
             print(f"{nombre} colisionaste:(!!")
             guardar_puntaje(nombre, jugador.puntaje)
             return False, congelado, tiempo_congelado
