@@ -1,6 +1,4 @@
 #Clases de la serpiente (Cabeza, Cuerpo, Cola) Mariana
-import pygame
-
 TAM_CELDA = 50
 
 class Cabeza:
