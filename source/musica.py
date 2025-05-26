@@ -20,4 +20,5 @@ def cargar_musica():
 
 
 def detener_musica():
-    pygame.mixer.music.stop()
+    if pygame.mixer.get_init():
+        pygame.mixer.music.stop()
