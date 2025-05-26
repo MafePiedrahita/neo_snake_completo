@@ -10,11 +10,11 @@ class Jugador:
         self.serpiente = Serpiente(x, y, recursos)
 
     def controlar(self, evento):
-        if evento.key == self.teclas["UP"]:
+        if evento.key == self.teclas["ARRIBA"]:
             self.serpiente.cambiar_direccion("ARRIBA")
-        elif evento.key == self.teclas["DOWN"]:
+        elif evento.key == self.teclas["ABAJO"]:
             self.serpiente.cambiar_direccion("ABAJO")
-        elif evento.key == self.teclas["LEFT"]:
+        elif evento.key == self.teclas["IZQUIERDA"]:
             self.serpiente.cambiar_direccion("IZQUIERDA")
-        elif evento.key == self.teclas["RIGHT"]:
+        elif evento.key == self.teclas["DERECHA"]:
             self.serpiente.cambiar_direccion("DERECHA")
