@@ -1,6 +1,5 @@
 import pygame
 import sys
-import os
 from source.recursos import Recursos
 from source.alimentos import Pera, Ciruela
 from source.obstaculos import Obstaculo
@@ -37,7 +36,7 @@ pantalla = pygame.display.set_mode((ANCHO, ALTO))
 pygame.display.set_caption("Neo-Snake Multijugador")
 clock = pygame.time.Clock()
 
-#menú dificultad
+# Menú de dificultad
 def mostrar_menu_dificultad(pantalla):
     pygame.mouse.set_visible(True)
     fuente = pygame.font.SysFont("Arial", 36, bold=True)
@@ -90,7 +89,7 @@ def mostrar_menu_dificultad(pantalla):
 
     return seleccion
 
-#menu final cuando se pierde
+# Menú final
 def mostrar_menu_final(pantalla):
     pygame.mouse.set_visible(True)
     fuente_boton = pygame.font.SysFont("Arial", 36, bold=True)
@@ -145,7 +144,7 @@ def mostrar_menu_final(pantalla):
 
     return seleccion
 
-#funcion jugar
+# Función principal del juego
 def jugar(config):
     FPS = config["fps"]
     DURACION_POWERUP = config["powerup_duracion"]
@@ -196,6 +195,12 @@ def jugar(config):
             tiempo_congelado, congelado, tiempo_actual, DURACION_POWERUP,
             ANCHO_CELDAS, ALTO_CELDAS, inicio_juego, TIEMPO_GRACIA
         )
+
+        # --- DETECCIÓN DE COLISIONES ---
+        for jugador in jugadores.values():
+            if jugador.serpiente.colisionar(ANCHO_CELDAS, ALTO_CELDAS, obstaculos):
+                corriendo = False
+                break
 
         for nombre, jugador in jugadores.items():
             x, y = jugador.serpiente.cabeza.posicion
