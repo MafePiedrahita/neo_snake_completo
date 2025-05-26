@@ -1,5 +1,6 @@
 import pygame
 import sys
+import os
 from source.recursos import Recursos
 from source.alimentos import Pera, Ciruela
 from source.obstaculos import Obstaculo
@@ -36,7 +37,6 @@ pantalla = pygame.display.set_mode((ANCHO, ALTO))
 pygame.display.set_caption("Neo-Snake Multijugador")
 clock = pygame.time.Clock()
 
-# Menú de dificultad
 def mostrar_menu_dificultad(pantalla):
     pygame.mouse.set_visible(True)
     fuente = pygame.font.SysFont("Arial", 36, bold=True)
@@ -89,15 +89,14 @@ def mostrar_menu_dificultad(pantalla):
 
     return seleccion
 
-# Menú final
-def mostrar_menu_final(pantalla):
+def mostrar_menu_final(pantalla, puntaje1, puntaje2):
     pygame.mouse.set_visible(True)
     fuente_boton = pygame.font.SysFont("Arial", 36, bold=True)
     fuente_titulo = pygame.font.SysFont("Arial", 64, bold=True)
+    fuente_puntaje = pygame.font.SysFont("Arial", 40, bold=True)
 
     opciones = ["Reiniciar", "Elegir de nuevo", "Salir"]
     botones = []
-
     ancho_ventana, alto_ventana = pantalla.get_size()
 
     for i, texto in enumerate(opciones):
@@ -107,21 +106,22 @@ def mostrar_menu_final(pantalla):
     seleccion = None
     while seleccion is None:
         pantalla.fill((20, 20, 50))
-
         titulo = fuente_titulo.render("Perdieron :(", True, (255, 80, 80))
-        pantalla.blit(titulo, (ancho_ventana // 2 - titulo.get_width() // 2, 120))
+        pantalla.blit(titulo, (ancho_ventana // 2 - titulo.get_width() // 2, 60))
+
+        texto_p1 = fuente_puntaje.render(f"Puntaje Jugador 1: {puntaje1}", True, (255, 255, 255))
+        texto_p2 = fuente_puntaje.render(f"Puntaje Jugador 2: {puntaje2}", True, (255, 255, 255))
+        pantalla.blit(texto_p1, (ancho_ventana // 2 - texto_p1.get_width() // 2, 150))
+        pantalla.blit(texto_p2, (ancho_ventana // 2 - texto_p2.get_width() // 2, 200))
 
         mouse_pos = pygame.mouse.get_pos()
-
         for rect, texto in botones:
             hover = rect.collidepoint(mouse_pos)
             color_fondo = (230, 230, 230) if hover else (60, 60, 90)
             color_borde = (255, 255, 255)
             color_texto = (0, 0, 0) if hover else (255, 255, 255)
-
             pygame.draw.rect(pantalla, color_fondo, rect, border_radius=20)
             pygame.draw.rect(pantalla, color_borde, rect, width=2, border_radius=20)
-
             texto_render = fuente_boton.render(texto, True, color_texto)
             pantalla.blit(
                 texto_render,
@@ -144,7 +144,6 @@ def mostrar_menu_final(pantalla):
 
     return seleccion
 
-# Función principal del juego
 def jugar(config):
     FPS = config["fps"]
     DURACION_POWERUP = config["powerup_duracion"]
@@ -196,7 +195,6 @@ def jugar(config):
             ANCHO_CELDAS, ALTO_CELDAS, inicio_juego, TIEMPO_GRACIA
         )
 
-        # --- DETECCIÓN DE COLISIONES ---
         for jugador in jugadores.values():
             if jugador.serpiente.colisionar(ANCHO_CELDAS, ALTO_CELDAS, obstaculos):
                 corriendo = False
@@ -229,22 +227,22 @@ def jugar(config):
 
     detener_musica()
     mostrar_puntajes()
+    return jugador1.puntaje, jugador2.puntaje
 
 # Bucle principal
 config = None
-
 while True:
     if config is None:
         config = mostrar_menu_dificultad(pantalla)
 
-    jugar(config)
+    puntaje1, puntaje2 = jugar(config)
 
-    eleccion = mostrar_menu_final(pantalla)
+    eleccion = mostrar_menu_final(pantalla, puntaje1, puntaje2)
 
     if eleccion == 0:
-        continue  # Reiniciar con misma dificultad
+        continue
     elif eleccion == 1:
-        config = None  # Volver a elegir dificultad
+        config = None
         continue
     elif eleccion == 2:
         pygame.quit()
