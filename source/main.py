@@ -1,6 +1,5 @@
 import pygame
 import sys
-import os
 from source.recursos import Recursos
 from source.alimentos import Pera, Ciruela
 from source.obstaculos import Obstaculo
