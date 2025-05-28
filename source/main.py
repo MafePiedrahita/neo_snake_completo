@@ -158,9 +158,9 @@ def jugar(config):
     num_frutas = config["frutas"]
     peras = [Pera(ANCHO_CELDAS, ALTO_CELDAS, recursos) for _ in range(num_frutas)]
     ciruelas = [Ciruela(ANCHO_CELDAS, ALTO_CELDAS, recursos) for _ in range(num_frutas)]
-    powerup = PowerupCongelar(ANCHO_CELDAS, ALTO_CELDAS)
+    powerup = PowerupCongelar(ANCHO_CELDAS, ALTO_CELDAS, recursos)
 
-    posiciones_prohibidas = [(9, 10), (11, 10)]
+    posiciones_prohibidas = [(7, 8), (11, 10)]
     obstaculos = []
     while len(obstaculos) < config["obstaculos"]:
         nuevo = Obstaculo(ANCHO_CELDAS, ALTO_CELDAS, recursos)
