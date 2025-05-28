@@ -151,8 +151,8 @@ def jugar(config):
     teclas_jugador1 = {"ARRIBA": pygame.K_UP, "ABAJO": pygame.K_DOWN, "IZQUIERDA": pygame.K_LEFT, "DERECHA": pygame.K_RIGHT}
     teclas_jugador2 = {"ARRIBA": pygame.K_w, "ABAJO": pygame.K_s, "IZQUIERDA": pygame.K_a, "DERECHA": pygame.K_d}
 
-    jugador1 = Jugador(teclas_jugador1, verde, (7, 8), recursos)
-    jugador2 = Jugador(teclas_jugador2, ROJO, (11, 10), recursos)
+    jugador1 = Jugador(teclas_jugador1, verde, (7, 8), recursos, "j1")
+    jugador2 = Jugador(teclas_jugador2, ROJO, (11, 10), recursos, "j2")
     jugadores = {"jugador1": jugador1, "jugador2": jugador2}
 
     num_frutas = config["frutas"]
