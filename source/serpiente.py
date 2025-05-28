@@ -2,10 +2,10 @@
 TAM_CELDA = 50
 
 class Cabeza:
-    def __init__(self, x, y, recursos):
+    def __init__(self, x, y, imagen):
         self.posicion = (x, y)
         self.direccion = "DERECHA"
-        self.imagen = recursos.get_imagen("cabeza")
+        self.imagen = imagen
 
     def mover(self):
         x, y = self.posicion
@@ -31,9 +31,9 @@ class Cabeza:
 
 
 class Cuerpo:
-    def __init__(self, recursos):
+    def __init__(self, imagen):
         self.segmentos = []
-        self.imagen = recursos.get_imagen("cuerpo")
+        self.imagen = imagen
 
     def mover(self, nueva_posicion):
         self.segmentos.insert(0, nueva_posicion)
@@ -46,20 +46,20 @@ class Cuerpo:
 
 
 class Cola:
-    def __init__(self, recursos):
+    def __init__(self, imagen):
         self.posicion = None
-        self.imagen = recursos.get_imagen("cola")
+        self.imagen = imagen
 
     def actualizar(self, nueva_posicion):
         self.posicion = nueva_posicion
 
 
 class Serpiente:
-    def __init__(self, x_inicial=5, y_inicial=5, recursos=None):
-        self.cabeza = Cabeza(x_inicial, y_inicial, recursos)
-        self.cuerpo = Cuerpo(recursos)
-        self.cola = Cola(recursos)
-        self.longitud = 1
+    def __init__(self, x, y, recursos, jugador_id):
+        self.cabeza = Cabeza(x, y, recursos.get_imagen(f"cabeza_{jugador_id}"))
+        self.cuerpo = Cuerpo(recursos.get_imagen(f"cuerpo_{jugador_id}"))
+        self.cola = Cola(recursos.get_imagen(f"cola_{jugador_id}"))
+        self.longitud = 3
 
     def mover(self):
         pos_anterior = self.cabeza.posicion
