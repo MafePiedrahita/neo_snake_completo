@@ -9,6 +9,6 @@ imagenes:
   fondo_tablero: "assets/imagenes/fondo_tablero.png"
   obstaculo: "assets/imagenes/obstaculo.png"
   pera: "assets/imagenes/pera.png"
-
+  powerup_congelar: "assets/imagenes/powerup_congelar.png"
 sonidos:
   musica_fondo: "assets/sonidos/musica_fondo.mp3"

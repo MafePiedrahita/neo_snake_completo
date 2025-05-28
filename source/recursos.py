@@ -4,7 +4,6 @@ from source.config_loader import ConfigLoader
 
 class Recursos:
     def __init__(self):
-        # Ruta absoluta al archivo config.yaml (subiendo desde source/)
         ruta_config = Path(__file__).resolve().parent.parent / "config.yaml"
         self.config = ConfigLoader(ruta_config)
         self.imagenes = {}
