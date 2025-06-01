@@ -29,6 +29,15 @@ class Cabeza:
         if nueva_direccion != opuestos.get(self.direccion):
             self.direccion = nueva_direccion
 
+    def direccion_opuesta(self):
+        opuestos = {
+            "ARRIBA": "ABAJO",
+            "ABAJO": "ARRIBA",
+            "IZQUIERDA": "DERECHA",
+            "DERECHA": "IZQUIERDA"
+        }
+        return opuestos[self.direccion]
+
 
 class Cuerpo:
     def __init__(self, imagen):
@@ -77,6 +86,9 @@ class Serpiente:
 
     def obtener_posiciones(self):
         return [self.cabeza.posicion] + self.cuerpo.segmentos
+
+    def obtener_cabeza(self):
+        return self.cabeza.posicion
 
     def colisionar(self, ancho_celdas, alto_celdas, obstaculos=None):
         if obstaculos is None:
