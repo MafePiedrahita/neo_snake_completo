@@ -3,7 +3,7 @@ import sys
 from source.recursos import Recursos
 from source.alimentos import Pera, Ciruela
 from source.obstaculos import Obstaculo
-from source.powerups import PowerupCongelar
+from source.powerups import PowerupCongelar, PowerupInmortalidad, PowerupCambioAleatorio, PowerupIman
 from source.musica import cargar_musica, detener_musica
 from source.puntajes import mostrar_puntajes
 from source.jugadores import Jugador
