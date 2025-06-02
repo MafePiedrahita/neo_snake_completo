@@ -1,11 +1,14 @@
-#Clases de la serpiente (Cabeza, Cuerpo, Cola) Mariana
+import pygame
+
 TAM_CELDA = 50
 
 class Cabeza:
     def __init__(self, x, y, imagen):
         self.posicion = (x, y)
         self.direccion = "DERECHA"
+        self.imagen_base = imagen
         self.imagen = imagen
+        self.rotar_imagen()
 
     def mover(self):
         x, y = self.posicion
@@ -28,6 +31,17 @@ class Cabeza:
         }
         if nueva_direccion != opuestos.get(self.direccion):
             self.direccion = nueva_direccion
+            self.rotar_imagen()
+
+    def rotar_imagen(self):
+        if self.direccion == "ARRIBA":
+            self.imagen = pygame.transform.rotate(self.imagen_base, 90)
+        elif self.direccion == "ABAJO":
+            self.imagen = pygame.transform.rotate(self.imagen_base, -90)
+        elif self.direccion == "IZQUIERDA":
+            self.imagen = pygame.transform.rotate(self.imagen_base, 180)
+        elif self.direccion == "DERECHA":
+            self.imagen = self.imagen_base
 
     def direccion_opuesta(self):
         opuestos = {
@@ -57,10 +71,22 @@ class Cuerpo:
 class Cola:
     def __init__(self, imagen):
         self.posicion = None
+        self.imagen_base = imagen
         self.imagen = imagen
 
-    def actualizar(self, nueva_posicion):
+    def actualizar(self, nueva_posicion, direccion="DERECHA"):
         self.posicion = nueva_posicion
+        self.rotar_imagen(direccion)
+
+    def rotar_imagen(self, direccion):
+        if direccion == "ARRIBA":
+            self.imagen = pygame.transform.rotate(self.imagen_base, 90)
+        elif direccion == "ABAJO":
+            self.imagen = pygame.transform.rotate(self.imagen_base, -90)
+        elif direccion == "IZQUIERDA":
+            self.imagen = pygame.transform.rotate(self.imagen_base, 180)
+        elif direccion == "DERECHA":
+            self.imagen = self.imagen_base
 
 
 class Serpiente:
@@ -74,8 +100,25 @@ class Serpiente:
         pos_anterior = self.cabeza.posicion
         self.cabeza.mover()
         self.cuerpo.mover(pos_anterior)
-        if len(self.cuerpo.segmentos) == self.longitud - 1 and self.cuerpo.segmentos:
-            self.cola.actualizar(self.cuerpo.segmentos[-1])
+
+        if len(self.cuerpo.segmentos) >= 1:
+            ultima = self.cuerpo.segmentos[-1]
+            anteultima = self.cuerpo.segmentos[-2] if len(self.cuerpo.segmentos) >= 2 else self.cabeza.posicion
+            dx = anteultima[0] - ultima[0]
+            dy = anteultima[1] - ultima[1]
+
+            if dx == 1:
+                direccion = "DERECHA"
+            elif dx == -1:
+                direccion = "IZQUIERDA"
+            elif dy == 1:
+                direccion = "ABAJO"
+            elif dy == -1:
+                direccion = "ARRIBA"
+            else:
+                direccion = "DERECHA"
+
+            self.cola.actualizar(ultima, direccion)
 
     def cambiar_direccion(self, nueva_direccion):
         self.cabeza.cambiar_direccion(nueva_direccion)

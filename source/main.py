@@ -36,6 +36,7 @@ pantalla = pygame.display.set_mode((ANCHO, ALTO))
 pygame.display.set_caption("Neo-Snake Multijugador")
 clock = pygame.time.Clock()
 
+
 def mostrar_menu_dificultad(pantalla):
     pygame.mouse.set_visible(True)
     fuente = pygame.font.SysFont("Arial", 36, bold=True)
@@ -43,9 +44,9 @@ def mostrar_menu_dificultad(pantalla):
 
     opciones = [
         ("Fácil",     {"fps": 5,  "obstaculos": 3,  "powerup_duracion": 15000, "tiempo_gracia": 5000, "frutas": 1}),
-        ("Intermedio", {"fps": 10, "obstaculos": 5,  "powerup_duracion": 10000, "tiempo_gracia": 5000, "frutas": 2}),
-        ("Difícil",    {"fps": 15, "obstaculos": 7,  "powerup_duracion": 7000,  "tiempo_gracia": 3000, "frutas": 3}),
-        ("Extremo",    {"fps": 20, "obstaculos": 10, "powerup_duracion": 5000,  "tiempo_gracia": 2000, "frutas": 4}),
+        ("Intermedio", {"fps": 5, "obstaculos": 5,  "powerup_duracion": 10000, "tiempo_gracia": 5000, "frutas": 2}),
+        ("Difícil",    {"fps": 8, "obstaculos": 7,  "powerup_duracion": 7000,  "tiempo_gracia": 3000, "frutas": 3}),
+        ("Extremo",    {"fps": 12, "obstaculos": 10, "powerup_duracion": 5000,  "tiempo_gracia": 2000, "frutas": 4}),
     ]
 
     botones = []
@@ -87,6 +88,7 @@ def mostrar_menu_dificultad(pantalla):
                         seleccion = config
 
     return seleccion
+
 
 def mostrar_menu_final(pantalla, puntaje1, puntaje2):
     pygame.mouse.set_visible(True)
@@ -143,6 +145,7 @@ def mostrar_menu_final(pantalla, puntaje1, puntaje2):
 
     return seleccion
 
+
 def jugar(config):
     FPS = config["fps"]
     DURACION_POWERUP = config["powerup_duracion"]
@@ -158,14 +161,29 @@ def jugar(config):
     num_frutas = config["frutas"]
     peras = [Pera(ANCHO_CELDAS, ALTO_CELDAS, recursos) for _ in range(num_frutas)]
     ciruelas = [Ciruela(ANCHO_CELDAS, ALTO_CELDAS, recursos) for _ in range(num_frutas)]
-    powerup = PowerupCongelar(ANCHO_CELDAS, ALTO_CELDAS, recursos)
 
+    # Crear obstáculos primero
     posiciones_prohibidas = [(7, 8), (11, 10)]
     obstaculos = []
     while len(obstaculos) < config["obstaculos"]:
         nuevo = Obstaculo(ANCHO_CELDAS, ALTO_CELDAS, recursos)
-        if (nuevo.x, nuevo.y) not in posiciones_prohibidas:
-            obstaculos.append((nuevo.x, nuevo.y))
+        pos = (nuevo.x, nuevo.y)
+        if pos not in posiciones_prohibidas and pos not in obstaculos:
+            obstaculos.append(pos)
+
+    # Crear conjunto de posiciones ocupadas
+    posiciones_ocupadas = set(obstaculos)
+    for jugador in jugadores.values():
+        posiciones_ocupadas.add(jugador.serpiente.cabeza.posicion)
+        posiciones_ocupadas.update(jugador.serpiente.cuerpo.segmentos)
+
+    # Crear power-ups en posiciones seguras
+    powerups = [
+        PowerupCongelar(ANCHO_CELDAS, ALTO_CELDAS, recursos, posiciones_ocupadas),
+        PowerupInmortalidad(ANCHO_CELDAS, ALTO_CELDAS, recursos, posiciones_ocupadas),
+        PowerupCambioAleatorio(ANCHO_CELDAS, ALTO_CELDAS, recursos, posiciones_ocupadas),
+        PowerupIman(ANCHO_CELDAS, ALTO_CELDAS, recursos, posiciones_ocupadas)
+    ]
 
     duplicar_puntaje = {"jugador1": False, "jugador2": False}
     tiempo_duplicar = {"jugador1": 0, "jugador2": 0}
@@ -188,33 +206,35 @@ def jugar(config):
             break
 
         corriendo, congelado, tiempo_congelado = actualizar_estado(
-            jugadores, peras, ciruelas, powerup, obstaculos,
+            jugadores, peras, ciruelas, powerups, obstaculos,
             duplicar_puntaje, tiempo_duplicar,
             tiempo_congelado, congelado, tiempo_actual, DURACION_POWERUP,
             ANCHO_CELDAS, ALTO_CELDAS, inicio_juego, TIEMPO_GRACIA
         )
 
-        for jugador in jugadores.values():
-            if jugador.serpiente.colisionar(ANCHO_CELDAS, ALTO_CELDAS, obstaculos):
-                corriendo = False
-                break
-
         for nombre, jugador in jugadores.items():
+            # Dibujar cabeza
             x, y = jugador.serpiente.cabeza.posicion
             pantalla.blit(jugador.serpiente.cabeza.imagen, (x * TAM_CELDA, y * TAM_CELDA))
-            for x, y in jugador.serpiente.cuerpo.segmentos:
+
+            # Dibujar cuerpo
+            for x, y in jugador.serpiente.cuerpo.segmentos[:-1]:
                 pantalla.blit(jugador.serpiente.cuerpo.imagen, (x * TAM_CELDA, y * TAM_CELDA))
+
+            # Dibujar cola
+            if jugador.serpiente.cola.posicion:
+                x_cola, y_cola = jugador.serpiente.cola.posicion
+                pantalla.blit(jugador.serpiente.cola.imagen, (x_cola * TAM_CELDA, y_cola * TAM_CELDA))
 
         for x, y in obstaculos:
             pantalla.blit(recursos.get_imagen("obstaculo"), (x * TAM_CELDA, y * TAM_CELDA))
 
         for pera in peras:
             pera.dibujar(pantalla)
-
         for ciruela in ciruelas:
             ciruela.dibujar(pantalla)
-
-        powerup.dibujar(pantalla)
+        for powerup in powerups:
+            powerup.dibujar(pantalla)
 
         fuente = pygame.font.SysFont(None, 28)
         texto1 = fuente.render(f"P1: {jugador1.puntaje}", True, BLANCO)
@@ -227,6 +247,7 @@ def jugar(config):
     detener_musica()
     mostrar_puntajes()
     return jugador1.puntaje, jugador2.puntaje
+
 
 # Bucle principal
 config = None

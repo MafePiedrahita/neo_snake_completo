@@ -1,12 +1,11 @@
-import random
+from source.utils import generar_posicion_libre
 
 TAM_CELDA = 50
 
 # === POWER-UP CONGELAR ===
 class PowerupCongelar:
-    def __init__(self, ancho_tablero, alto_tablero, recursos):
-        self.x = random.randint(0, ancho_tablero - 1)
-        self.y = random.randint(0, alto_tablero - 1)
+    def __init__(self, ancho_tablero, alto_tablero, recursos, posiciones_ocupadas):
+        self.x, self.y = generar_posicion_libre(ancho_tablero, alto_tablero, posiciones_ocupadas)
         self.visible = True
         self.imagen = recursos.get_imagen("powerup_congelar")
 
@@ -22,9 +21,8 @@ class PowerupCongelar:
 
 # === POWER-UP INMORTALIDAD ===
 class PowerupInmortalidad:
-    def __init__(self, ancho_tablero, alto_tablero, recursos):
-        self.x = random.randint(0, ancho_tablero - 1)
-        self.y = random.randint(0, alto_tablero - 1)
+    def __init__(self, ancho_tablero, alto_tablero, recursos, posiciones_ocupadas):
+        self.x, self.y = generar_posicion_libre(ancho_tablero,alto_tablero, posiciones_ocupadas)
         self.visible = True
         self.imagen = recursos.get_imagen("powerup_inmortalidad")
         self.duracion = 300  # duración en ticks
@@ -43,9 +41,8 @@ class PowerupInmortalidad:
 
 # === POWER-UP CAMBIO ALEATORIO DE DIRECCIÓN ===
 class PowerupCambioAleatorio:
-    def __init__(self, ancho_tablero, alto_tablero, recursos):
-        self.x = random.randint(0, ancho_tablero - 1)
-        self.y = random.randint(0, alto_tablero - 1)
+    def __init__(self, ancho_tablero, alto_tablero, recursos, posiciones_ocupadas):
+        self.x, self.y = generar_posicion_libre(ancho_tablero, alto_tablero, posiciones_ocupadas)
         self.visible = True
         self.imagen = recursos.get_imagen("powerup_random")
 
@@ -67,9 +64,8 @@ class PowerupCambioAleatorio:
 
 # === POWER-UP IMÁN ===
 class PowerupIman:
-    def __init__(self, ancho_tablero, alto_tablero, recursos):
-        self.x = random.randint(0, ancho_tablero - 1)
-        self.y = random.randint(0, alto_tablero - 1)
+    def __init__(self, ancho_tablero, alto_tablero, recursos, posiciones_ocupadas):
+        self.x, self.y = generar_posicion_libre(ancho_tablero, alto_tablero, posiciones_ocupadas)
         self.visible = True
         self.imagen = recursos.get_imagen("powerup_iman")
         self.rango = 3  # rango de atracción
