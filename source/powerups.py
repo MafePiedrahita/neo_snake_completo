@@ -1,3 +1,4 @@
+import random
 from source.utils import generar_posicion_libre
 
 TAM_CELDA = 50

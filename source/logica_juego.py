@@ -19,20 +19,41 @@ def actualizar_estado(jugadores, peras, ciruelas, powerups, obstaculos,
     en_tiempo_de_gracia = False  # Puedes usar esto más adelante si quieres revivir con delay
 
     for nombre, jugador in jugadores.items():
+        # Verificar si el jugador está congelado
+        if getattr(jugador, "congelado", False):
+            if tiempo_actual - jugador.tiempo_congelado < DURACION_POWERUP:
+                continue  # No se mueve si sigue congelado
+            else:
+                jugador.congelado = False
+
         jugador.serpiente.mover()
         cabeza = jugador.serpiente.cabeza.posicion
 
-        # === ACTIVAR POWER-UPS primero ===
+        # === ACTIVAR POWER-UPS ===
         for powerup in powerups:
             if powerup.visible and cabeza == powerup.obtener_posicion():
                 try:
-                    powerup.activar(jugador)  # Si requiere jugador
+                    powerup.activar(jugador)
                 except TypeError:
-                    powerup.activar()         # Si no lo requiere
+                    powerup.activar()
 
                 if isinstance(powerup, PowerupCongelar):
-                    congelado = True
-                    tiempo_congelado = tiempo_actual
+                    for otro_nombre, otro_jugador in jugadores.items():
+                        if otro_nombre != nombre:
+                            otro_jugador.congelado = True
+                            otro_jugador.tiempo_congelado = tiempo_actual
+
+                elif isinstance(powerup, PowerupInmortalidad):
+                    jugador.inmortal = True
+                    jugador.tiempo_inmortal = tiempo_actual
+
+                elif isinstance(powerup, PowerupIman):
+                    jugador.iman_activo = True
+                    jugador.tiempo_iman = tiempo_actual
+
+                elif isinstance(powerup, PowerupCambioAleatorio):
+                    # El powerup ya cambia dirección internamente
+                    pass
 
         # === Comer peras ===
         for pera in peras:
@@ -49,7 +70,7 @@ def actualizar_estado(jugadores, peras, ciruelas, powerups, obstaculos,
                 duplicar_puntaje[nombre] = True
                 tiempo_duplicar[nombre] = tiempo_actual
 
-        # === Evaluar colisiones si NO es inmortal ===
+        # === Colisiones si NO es inmortal ===
         if not en_tiempo_de_gracia and not getattr(jugador, "inmortal", False):
             if jugador.serpiente.colisionar(ancho_celdas, alto_celdas, obstaculos):
                 print(f"{nombre} colisionó con borde, cuerpo o obstáculo en {jugador.serpiente.cabeza.posicion}")
@@ -68,15 +89,18 @@ def actualizar_estado(jugadores, peras, ciruelas, powerups, obstaculos,
         if duplicar_puntaje[nombre] and tiempo_actual - tiempo_duplicar[nombre] > DURACION_POWERUP:
             duplicar_puntaje[nombre] = False
 
-    # === Finaliza efecto de congelar ===
-    if congelado and tiempo_actual - tiempo_congelado > DURACION_POWERUP:
-        congelado = False
-
-    # === Finaliza efectos por jugador ===
+    # === Finaliza efectos de power-ups ===
     for jugador in jugadores.values():
-        if getattr(jugador, "inmortal", False) and tiempo_actual - jugador.tiempo_inmortal > DURACION_POWERUP:
-            jugador.inmortal = False
-        if getattr(jugador, "iman_activo", False) and tiempo_actual - jugador.tiempo_iman > DURACION_POWERUP:
-            jugador.iman_activo = False
+        if getattr(jugador, "inmortal", False):
+            if tiempo_actual - jugador.tiempo_inmortal > DURACION_POWERUP:
+                jugador.inmortal = False
+
+        if getattr(jugador, "iman_activo", False):
+            if tiempo_actual - jugador.tiempo_iman > DURACION_POWERUP:
+                jugador.iman_activo = False
+
+        if getattr(jugador, "congelado", False):
+            if tiempo_actual - jugador.tiempo_congelado > DURACION_POWERUP:
+                jugador.congelado = False
 
     return True, congelado, tiempo_congelado
