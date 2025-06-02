@@ -149,3 +149,6 @@ class Serpiente:
             return True
 
         return False
+
+    def direccion_opuesta(self):
+        return self.cabeza.direccion_opuesta()

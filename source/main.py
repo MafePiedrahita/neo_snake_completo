@@ -211,6 +211,27 @@ def jugar(config):
             tiempo_congelado, congelado, tiempo_actual, DURACION_POWERUP,
             ANCHO_CELDAS, ALTO_CELDAS, inicio_juego, TIEMPO_GRACIA
         )
+        # --- Efecto del imán: frutas se acercan a la cabeza del jugador con imán activo ---
+        for jugador in jugadores.values():
+            if jugador.iman_activo:
+                for fruta in peras + ciruelas:
+                    fruta.mover_hacia(jugador.serpiente.cabeza.posicion)
+        # Verificar si frutas que fueron atraídas colisionaron con la cabeza del jugador
+        for nombre, jugador in jugadores.items():
+            cabeza = jugador.serpiente.obtener_cabeza()
+
+            for pera in peras:
+                if (pera.x, pera.y) == cabeza:
+                    jugador.serpiente.crecer()
+                    jugador.puntaje += 2 if duplicar_puntaje[nombre] else 1
+                    pera.nueva_posicion()
+
+            for ciruela in ciruelas:
+                if (ciruela.x, ciruela.y) == cabeza:
+                    jugador.serpiente.crecer()
+                    duplicar_puntaje[nombre] = True
+                    tiempo_duplicar[nombre] = pygame.time.get_ticks()
+                    ciruela.nueva_posicion()
 
         for nombre, jugador in jugadores.items():
             # Dibujar cabeza

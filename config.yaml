@@ -10,7 +10,7 @@ imagenes:
   obstaculo: "assets/imagenes/obstaculo.png"
   pera: "assets/imagenes/pera.png"
   powerup_congelar: "assets/imagenes/powerup_congelar.png"
-  powerup_inmortalidad: "assets/imagenes/powepup_inmortalidad.png"
+  powerup_inmortalidad: "assets/imagenes/powerup_inmortalidad.png"
   powerup_random: "assets/imagenes/powerup_cambiodedireccion.png"
   powerup_iman: "assets/imagenes/powerup_iman.png"
 
